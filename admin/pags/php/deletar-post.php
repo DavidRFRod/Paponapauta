@@ -1,0 +1,1 @@
+<?php delete("posts", "id", $explode['1'], "admin/gerenciar-posts/");?>
