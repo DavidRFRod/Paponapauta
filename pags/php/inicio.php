@@ -1,7 +1,10 @@
-<?php getPosts();?>
+<?php getPostsVideo(); ?> <?php getPostsImagem(); ?>
+
+
 
 <ul class="pagination justify-content-center">
-  <?php listaPaginas();?>
+<?php listaPaginas();?>
+
 </ul>
           
           

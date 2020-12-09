@@ -1,15 +1,14 @@
-<?php include_once("lib/includes.php");?>
 <!DOCTYPE html>
+<?php include_once("lib/includes.php");?>
 <html lang="pt">
-
 <head>
-
+  <base href="<?= url_site; ?>">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title><?php geraTitulo(titulo_site);?></title>
+  <title><?= titulo_site;?></title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,20 +38,20 @@
           <li class="nav-item">
             <a class="nav-link" href="inicio">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sobre">Sobre mim</a>
-          </li>
           <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Categorias
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <?php getCategoriasSite();?>
-        </div>
-      </li>
+            <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Categorias
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <?php getCategoriasSite();?>
+            </div>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="contato">Contato</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sobre">Sobre mim</a>
+         </li>
         </ul>
       </div>
     </div>
@@ -77,48 +76,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-10 col-md-10 mx-auto">
-      <?php paginacao();?>
-      <hr>     
-        
-        <!-- <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
-            </h2>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on September 18, 2019</p>
-        </div>
-        <hr>
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              Science has not yet mastered prophecy
-            </h2>
-            <h3 class="post-subtitle">
-              We predict too much for the next year and yet far too little for the next ten.
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on August 24, 2019</p>
-        </div>
-        <hr>
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              Failure is not an option
-            </h2>
-            <h3 class="post-subtitle">
-              Many say exploration is part of our destiny, but it’s actually our duty to future generations.
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on July 8, 2019</p>
-        </div> -->
-        <!-- Pager -->
+      <?php paginacao(); ?>
       </div>
     </div>
   </div>

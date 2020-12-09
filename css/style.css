@@ -77,7 +77,6 @@
 
 	.menu{margin-bottom: 20px; padding: 0px; background-color: #333;}
 	.menu .title-menu{background-color: #333; color: #FFF; padding: 10px; text-align: center; text-transform: uppercase; border-bottom: 1px dotted #ccc;}
-	.menu ul{}
 	.menu ul .blue{border-left: 2px solid dodgerblue;}
 	.menu ul .cyan2{border-left: 2px solid blue;}
 	.menu ul .cyan{border-left: 2px solid cyan;}

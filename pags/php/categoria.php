@@ -1,4 +1,3 @@
-
 <div class="busca">
   BUSCANDO NA CATEGORIA <b><?php echo strtoupper(getNomeCategoria($explode['1']));?></b>
 </div>

@@ -2,7 +2,7 @@
 		#Dados do site
 		define ("titulo_site", "Papo na Pauta");
 		define ("desenvolvedor", "David Raphael Freitas Rodrigues");
-		define("url_site", "http://localhost/blog/");
+		define("url_site", "http://localhost/Paponapauta/");
 
 
 		#Dados do banco
