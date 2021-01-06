@@ -166,6 +166,8 @@
 
 	function enviarPost(){
 		if(isset($_POST['env'])&& $_POST['env'] == "post"){
+
+			
 			$pdo = pdo();
 	
 			$subtitulo = tirarAcentos($_POST['titulo']);
@@ -174,101 +176,103 @@
 	
 			$uploaddir = '../images/uploads/';
 			$uploadfile = $uploaddir.basename($_FILES['userfile']['name']);
-	
+			
 			$uploaddir2 = 'images/uploads/';
 			$uploadfile2 = $uploaddir2.basename($_FILES['userfile']['name']);
+
+			
+			
+				$stmt = $pdo->prepare("INSERT INTO posts (
+					titulo,
+					subtitulo,
+					postagem,
+					imagem,
+					data,
+					categoria,
+					id_postador) VALUES (
+						:titulo,
+						:subtitulo,
+						:postagem,
+						:imagem,
+						:data,
+						:categoria,
+						:id_postador
+					)
+				");
+				var_dump($stmt);
+				$stmt ->execute([
+					':titulo' => $_POST['titulo'], 
+					':subtitulo' => $subtitulo, 
+					':postagem' => $_POST['post'], 
+					':imagem' => $uploadfile2, 
+					':data' => $data, 
+					':categoria' => $_POST['categoria'], 
+					':id_postador' => $_SESSION['admLogin'] 
+				]);
+		
+				$total = $stmt->rowCount();
+				if($total > 0){
+					move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile);
+					alerta("success", "Publicação realizada com sucesso!");
+				}else{
+					alerta("danger", "Cheque as informações e tente novamente");
+				}
+			}
+		}
+	function enviarPostVideo(){
+		if(isset($_POST['env'])&& $_POST['env'] == "postvideo"){
+
+			
+			$pdo = pdo();
 	
-			$stmt = $pdo->prepare("INSERT INTO posts (
-				titulo,
-				subtitulo,
-				postagem,
-				imagem,
-				data,
-				categoria,
-				id_postador) VALUES (
-					:titulo,
-					:subtitulo,
-					:postagem,
-					:imagem,
-					:data,
-					:categoria,
-					:id_postador
-				)
-			");
-			$stmt ->execute([
-				':titulo' => $_POST['titulo'], 
-				':subtitulo' => $subtitulo, 
-				':postagem' => $_POST['post'], 
-				':imagem' => $uploadfile2, 
-				':data' => $data, 
-				':categoria' => $_POST['categoria'], 
-				':id_postador' => $_SESSION['admLogin'] 
-			]);
+			$subtitulo = tirarAcentos($_POST['titulo']);
+			
+			$data = getData();
 	
-			$total = $stmt->rowCount();
+			$uploaddir = '../videos/uploads/';
+			$uploadfile = $uploaddir.basename($_FILES['userfile2']['name']);
 	
-			if($total > 0){
-				move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile);
-				alerta("success", "Publicação realizada com sucesso!");
-			}else{
-				alerta("danger", "Cheque as informações e tente novamente");
+			$uploaddir2 = 'videos/uploads/';
+			$uploadfile2 = $uploaddir2.basename($_FILES['userfile2']['name']);
+			
+				$stmt = $pdo->prepare("INSERT INTO postsvideo (
+					titulo,
+					subtitulo,
+					postagem,
+					video,
+					data,
+					categoria,
+					id_postador) VALUES (
+						:titulo,
+						:subtitulo,
+						:postagem,
+						:video,
+						:data,
+						:categoria,
+						:id_postador
+					)
+				");
+				$stmt ->execute([
+					':titulo' => $_POST['titulo'], 
+					':subtitulo' => $subtitulo, 
+					':postagem' => $_POST['post'], 
+					':video' => $uploadfile2, 
+					':data' => $data, 
+					':categoria' => $_POST['categoria'], 
+					':id_postador' => $_SESSION['admLogin'] 
+				]);
+				
+				$total = $stmt->rowCount();
+				
+				if($total > 0){
+					move_uploaded_file($_FILES['userfile2']['tmp_name'], $uploadfile);
+					alerta("success", "Publicação realizada com sucesso!");
+				}else{
+					alerta("danger", "Cheque as informações e tente novamente");
+				}
 			}
 		}
 
-	}
-	// function enviarPostVideo(){
-	// 	if(isset($_POST['env'])&& $_POST['env'] == "postvideo"){
-	// 		$pdo = pdo();
-	
-	// 		$subtitulo = tirarAcentos($_POST['titulo2']);
-			
-	// 		$data = getData();
-	
-	// 		$uploaddir = '../images/uploads/videos';
-	// 		$uploadfile = $uploaddir.basename($_FILES['userfile']['name']);
-	
-	// 		$uploaddir2 = 'images/uploads/videos';
-	// 		$uploadfile2 = $uploaddir2.basename($_FILES['userfile']['name']);
-	
-	// 		$stmt = $pdo->prepare("INSERT INTO posts (
-	// 			titulo,
-	// 			subtitulo,
-	// 			postagem,
-	// 			imagem,
-	// 			data,
-	// 			categoria,
-	// 			id_postador) VALUES (
-	// 				:titulo,
-	// 				:subtitulo,
-	// 				:postagem,
-	// 				:imagem,
-	// 				:data,
-	// 				:categoria,
-	// 				:id_postador
-	// 			)
-	// 		");
-	// 		$stmt ->execute([
-	// 			':titulo' => $_POST['titulo2'], 
-	// 			':subtitulo' => $subtitulo, 
-	// 			':postagem' => $_POST['postvideo'], 
-	// 			':imagem' => $uploadfile2, 
-	// 			':data' => $data, 
-	// 			':categoria' => $_POST['categoria'], 
-	// 			':id_postador' => $_SESSION['admLogin'] 
-	// 		]);
-	
-	// 		$total = $stmt->rowCount();
-	
-	// 		if($total > 0){
-	// 			move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile);
-	// 			alerta("success", "Publicação realizada com sucesso!");
-	// 		}else{
-	// 			alerta("danger", "Cheque as informações e tente novamente");
-	// 		}
-	// 	}else{
-
-	// 	}
-	// }
 	function getNomeCategoria($id){
 		$pdo = pdo();
 		
@@ -678,19 +682,21 @@ lauchModal($dados['id'], $dados['nome'], $dados['comentario']);
 			while ($dados = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 					echo " 
+					
 					<div class='post-preview'>
 					<a href='{$dados['subtitulo']}'>
 					<h2 class='post-title'>
 					{$dados['titulo']}
 					</h2>
 					</a>
-					<div class='col-sm-3'>
-					<img src='{$dados['imagem']}' style='height:400px; width:900px;'>
+					<div class='col-sm-12'>
+					<img src='{$dados['imagem']}' style='height:400px; width:750px;' class='img-fluid'>
 					</div>
 					<div class='col-sm'>
 					".limitaCaracters(strip_tags($dados['postagem']))." 
 					</div>
 					<br>
+					<hr>
 					<div class='infos'>
 						<i class='fas fa-user'></i> ".getDadosUserSite($dados['id_postador'],"nome")." |
 						<i class='fas fa-tag'></i> <a href='categoria/{$dados['categoria']}' class='badge badge-primary'>".getNomeCategoria($dados['categoria'])."</a> |
@@ -698,7 +704,9 @@ lauchModal($dados['id'], $dados['nome'], $dados['comentario']);
 						<i class='fas fa-comment'></i> ".contador_ComentariosFromPost($dados['id'])." Comentários |
 						<i class='far fa-clock'></i> ".calculaDias($data, $dados['data'])."
 					</div>
-					<br>";
+					<hr>
+					<br>
+					";
 			}
 		}
 	}
@@ -712,7 +720,7 @@ lauchModal($dados['id'], $dados['nome'], $dados['comentario']);
 		$maximo = totalPostsPorPagina;
 		$inicio = ($pg -1) * $maximo;
 
-		$stmt = $pdo->prepare("SELECT * FROM posts ORDER BY id DESC limit $inicio,$maximo");
+		$stmt = $pdo->prepare("SELECT * FROM postsvideo ORDER BY id DESC limit $inicio,$maximo");
 		$stmt->execute();
 
 		$total = $stmt->rowCount();
@@ -721,28 +729,33 @@ lauchModal($dados['id'], $dados['nome'], $dados['comentario']);
 			while ($dados = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 					echo " 
+					
 					<div class='post-preview'>
 					<a href='{$dados['subtitulo']}'>
 					<h2 class='post-title'>
 					{$dados['titulo']}
 					</h2>
 					</a>
-					<div class='col-sm-3'>
-					<video width='400' controls='controls'>
-					<source src='{$dados['imagem']}' type='video/mp4'></video>
+					<div class='col-sm-12'>
+					<video width='100%' controls='controls'>
+					<source src='{$dados['video']}' type='video/mp4'></video>
 					</div>
 					<div class='col-sm'>
 					".limitaCaracters(strip_tags($dados['postagem']))." 
 					</div>
 					<br>
-					<div class='infos'>
-						<i class='fas fa-user'></i> ".getDadosUserSite($dados['id_postador'],"nome")." |
-						<i class='fas fa-tag'></i> <a href='categoria/{$dados['categoria']}' class='badge badge-primary'>".getNomeCategoria($dados['categoria'])."</a> |
-						<i class='fas fa-eye'></i> ".$dados['visualizacoes']." Visitas |  
-						<i class='fas fa-comment'></i> ".contador_ComentariosFromPost($dados['id'])." Comentários |
+					<hr>
+					<div class='infos col-sm-12'>
+						<i class='fas fa-user '></i> ".getDadosUserSite($dados['id_postador'],"nome")." |
+						<i class='fas fa-tag '></i> <a href='categoria/{$dados['categoria']}' class='badge badge-primary'>".getNomeCategoria($dados['categoria'])."</a> |
+						<i class='fas fa-eye '></i> ".$dados['visualizacoes']." Visitas |  
+						<i class='fas fa-comment '></i> ".contador_ComentariosFromPost($dados['id'])." Comentários |
 						<i class='far fa-clock'></i> ".calculaDias($data, $dados['data'])."
 					</div>
-					<br>";
+					<hr>
+					
+					<br>
+					";
 			}
 		}
 	}
@@ -849,13 +862,56 @@ lauchModal($dados['id'], $dados['nome'], $dados['comentario']);
 
 				echo "<div class='post-preview'>
 				<a href='{$dados['subtitulo']}'>
-				  <h2 class=''>
-				  {$dados['titulo']}
-				  </h2>
+				<h2 class='post-title'>
+				{$dados['titulo']}
+				</h2>
 				</a>
 				<div class='col-sm-3'>
-				<img src='{$dados['imagem']}' style='height:400px; width:900px;'>
+				<img src='{$dados['imagem']}' style='height:400px; width:900px;' class='img-fluid'>
 				</div>
+				<div class='col-sm'>
+				".limitaCaracters(strip_tags($dados['postagem']))." 
+				</div>
+				<br>
+				<div class='infos'>
+					<i class='fas fa-user'></i> ".getDadosUserSite($dados['id_postador'],"nome")." |
+					<i class='fas fa-tag'></i> <a href='categoria/{$dados['categoria']}' class='badge badge-primary'>".getNomeCategoria($dados['categoria'])."</a> |
+					<i class='fas fa-eye'></i> ".$dados['visualizacoes']." Visitas |  
+					<i class='fas fa-comment'></i> ".contador_ComentariosFromPost($dados['id'])." Comentários |
+					<i class='far fa-clock'></i> ".calculaDias($data, $dados['data'])."
+				  </div>
+				  <br>";
+			}
+		}
+	}
+	function getPostsFromCategoria2($categoria){
+		$pdo = pdo();
+		$data = getData();
+
+		$url = (isset($_GET['pagina'])) ? $_GET['pagina'] : 'dashboard';
+		$explode = explode('/', $url);
+		$pg = (isset($explode['3'])) ? $explode['3'] : 1;
+		$maximo = totalPostsPorPagina;
+		$inicio = ($pg -1) * $maximo;
+
+		$stmt = $pdo->prepare("SELECT * FROM postsvideo WHERE categoria = :categoria ORDER BY id DESC limit $inicio,$maximo");
+		$stmt->execute([':categoria' => $categoria]);
+
+		$total = $stmt->rowCount();
+
+		if($total > 0){
+			while ($dados = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+				echo "<div class='post-preview'>
+				<a href='{$dados['subtitulo']}'>
+				<h2 class='post-title'>
+				{$dados['titulo']}
+				</h2>
+				</a>
+				<div class='col-sm-12'>
+					<video width='100%' controls='controls'>
+					<source src='{$dados['video']}' type='video/mp4'></video>
+					</div>
 				<div class='col-sm'>
 				".limitaCaracters(strip_tags($dados['postagem']))." 
 				</div>
@@ -891,10 +947,12 @@ lauchModal($dados['id'], $dados['nome'], $dados['comentario']);
 		if($total > 0){
 			while ($dados = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-				echo "<div class='content-post'>
-  <div class='title'>
-    <a href='{$dados['subtitulo']}'>{$dados['titulo']}</a> 
-  </div>
+				echo "
+				<div class='content-post'>
+				<a href='{$dados['subtitulo']}'>
+				<h2 class='post-title'>
+				{$dados['titulo']}
+				</h2>
   <div class='content'>
     <div class='container'>
       <div class='row'>
@@ -927,6 +985,23 @@ lauchModal($dados['id'], $dados['nome'], $dados['comentario']);
 		$pdo = pdo();
 
 		$stmt = $pdo->prepare("SELECT * FROM posts WHERE subtitulo = :subtitulo");
+		$stmt->execute([':subtitulo' => $explode[0]]);
+		$total = $stmt->rowCount();
+
+		if($total <=0){
+			include("pags/php/404.php");
+			exit();
+		}else{
+			return $stmt->fetch(PDO::FETCH_ASSOC);
+		}
+	}
+	function getCompletePost2(){
+		$url = (isset($_GET['pagina'])) ? $_GET['pagina'] : 'inicio';
+		$explode = explode('/', $url);
+
+		$pdo = pdo();
+
+		$stmt = $pdo->prepare("SELECT * FROM postsvideo WHERE subtitulo = :subtitulo");
 		$stmt->execute([':subtitulo' => $explode[0]]);
 		$total = $stmt->rowCount();
 

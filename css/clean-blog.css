@@ -88,6 +88,9 @@ img::-moz-selection {
   color: #fff;
   background: transparent;
 }
+img, p{
+  float: left;
+}
 
 #mainNav {
   position: absolute;
@@ -271,6 +274,7 @@ header.masthead .post-heading .meta a {
     font-size: 30px;
   }
 }
+
 
 
 .post-preview > a {

@@ -5,12 +5,16 @@
 ?>
 <div class="content-post">
             <div class="title">
-              <a href="<?php echo $dados['subtitulo'];?>"><?php echo $dados['titulo'];?></a> 
+              <h2>
+              <a href="<?php echo $dados['subtitulo'];?>"><?php echo $dados['titulo'];?></a>
+              </h2>
+               
             </div>
             <img src="<?php echo $dados['imagem'];?>" class="img-fluid">
             <div class="post">
               <?php echo $dados['postagem'];?>
             </div>
+            <br>
             <div class="infos">
               <i class="fas fa-user"></i> <?php echo getDadosUserSite($dados['id_postador'], "nome"); ?> |
               <i class="fas fa-tag"></i> <a href="categoria/<?php echo $dados['categoria'];?>" class="badge badge-primary"><?php echo getNomeCategoria($dados['categoria']); ?></a> |

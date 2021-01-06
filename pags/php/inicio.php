@@ -1,4 +1,5 @@
-<?php getPostsVideo(); ?> <?php getPostsImagem(); ?>
+<?php getPostsImagem(); ?>
+<?php getPostsVideo(); ?> 
 
 
 
